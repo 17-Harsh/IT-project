@@ -1,14 +1,18 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+const int INT_MAX = 1e9 + 7;
+
+
+using namespace std;
 
 class Student {
 public:
-    std::string name;
+    string name;
     int rollNumber;
     double cgpa;
 
-    Student(std::string name, int rollNumber, double cgpa) : name(name), rollNumber(rollNumber), cgpa(cgpa) {}
+    Student(string name, int rollNumber, double cgpa) : name(name), rollNumber(rollNumber), cgpa(cgpa) {}
 };
 
 class Node {
@@ -27,7 +31,6 @@ public:
     StudentManagementSystem() : head(nullptr) {}
 
     ~StudentManagementSystem() {
-        // Clean up allocated memory for nodes
         Node* current = head;
         while (current) {
             Node* temp = current;
@@ -36,7 +39,7 @@ public:
         }
     }
 
-    void addStudent(std::string name, int rollNumber, double cgpa) {
+    void addStudent(string name, int rollNumber, double cgpa) {
         Student student(name, rollNumber, cgpa);
         Node* newNode = new Node(student);
         if (!head) {
@@ -48,27 +51,26 @@ public:
     }
 
     void displayStudents() {
-        std::cout << "Student Details:" << std::endl;
+        cout << "Student Details:" << endl;
         Node* current = head;
         while (current) {
-            std::cout << "Name: " << current->student.name << ", Roll Number: " << current->student.rollNumber << ", CGPA: " << current->student.cgpa << std::endl;
+            cout << "Name: " << current->student.name << ", Roll Number: " << current->student.rollNumber << ", CGPA: " << current->student.cgpa << endl;
             current = current->next;
         }
     }
 
     void sortStudentsByCGPA() {
-        std::vector<Student> studentsVector;
+        vector<Student> studentsVector;
         Node* current = head;
         while (current) {
             studentsVector.push_back(current->student);
             current = current->next;
         }
 
-        std::sort(studentsVector.begin(), studentsVector.end(), [](const Student& a, const Student& b) {
+        sort(studentsVector.begin(), studentsVector.end(), [](const Student& a, const Student& b) {
             return a.cgpa > b.cgpa;
         });
 
-        // Reconstruct the linked list after sorting
         Node* newHead = nullptr;
         for (const auto& student : studentsVector) {
             Node* newNode = new Node(student);
@@ -76,7 +78,6 @@ public:
             newHead = newNode;
         }
 
-        // Update head with the sorted linked list
         head = newHead;
     }
 
@@ -84,14 +85,14 @@ public:
         Node* current = head;
         while (current) {
             if (current->student.rollNumber == rollNumber) {
-                std::cout << "Student found:\n";
-                std::cout << "Name: " << current->student.name << ", Roll Number: " << current->student.rollNumber << ", CGPA: " << current->student.cgpa << std::endl;
+                cout << "Student found:" << endl;
+                cout << "Name: " << current->student.name << ", Roll Number: " << current->student.rollNumber << ", CGPA: " << current->student.cgpa << endl;
                 return true;
             }
             current = current->next;
         }
 
-        std::cout << "Student with Roll Number " << rollNumber << " not found.\n";
+        cout << "Student with Roll Number " << rollNumber << " not found." << endl;
         return false;
     }
 };
@@ -101,28 +102,28 @@ int main() {
 
     int choice;
     do {
-        std::cout << "\nStudent Management System Menu:\n";
-        std::cout << "1. Add Student\n";
-        std::cout << "2. Display Students\n";
-        std::cout << "3. Sort Students by CGPA\n";
-        std::cout << "4. Search Student by Roll Number\n";
-        std::cout << "5. Exit\n";
-        std::cout << "Enter your choice: ";
-        std::cin >> choice;
+        cout << "\nStudent Management System Menu:\n";
+        cout << "1. Add Student\n";
+        cout << "2. Display Students\n";
+        cout << "3. Sort Students by CGPA\n";
+        cout << "4. Search Student by Roll Number\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
 
         switch (choice) {
             case 1: {
-                std::string name;
+                string name;
                 int rollNumber;
                 double cgpa;
-                std::cout << "Enter student details:\n";
-                std::cout << "Name: ";
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::getline(std::cin, name);
-                std::cout << "Roll Number: ";
-                std::cin >> rollNumber;
-                std::cout << "CGPA: ";
-                std::cin >> cgpa;
+                cout << "Enter student details:\n";
+                cout << "Name: ";
+                cin.ignore(INT_MAX, '\n');
+                getline(cin, name);
+                cout << "Roll Number: ";
+                cin >> rollNumber;
+                cout << "CGPA: ";
+                cin >> cgpa;
                 sms.addStudent(name, rollNumber, cgpa);
                 break;
             }
@@ -131,20 +132,20 @@ int main() {
                 break;
             case 3:
                 sms.sortStudentsByCGPA();
-                std::cout << "Students sorted by CGPA.\n";
+                cout << "Students sorted by CGPA." << endl;
                 break;
             case 4: {
                 int rollNumber;
-                std::cout << "Enter Roll Number to search: ";
-                std::cin >> rollNumber;
+                cout << "Enter Roll Number to search: ";
+                cin >> rollNumber;
                 sms.searchStudent(rollNumber);
                 break;
             }
             case 5:
-                std::cout << "Exiting...\n";
+                cout << "Exiting..." << endl;
                 break;
             default:
-                std::cout << "Invalid choice. Try again.\n";
+                cout << "Invalid choice. Try again." << endl;
                 break;
         }
     } while (choice != 5);
